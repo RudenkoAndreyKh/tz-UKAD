@@ -1,25 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import AppRouter from './app/router';
+import { StateProvider } from './app/context';
+import './App.scss';
+import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 
-function App() {
+const App = () => {
+  const options = {
+    // you can also just use 'bottom center'
+    position: positions.TOP_RIGHT,
+    timeout: 5000,
+    offset: '30px',
+    // you can also just use 'scale'
+    transition: transitions.SCALE
+  }
+
+  const alertTemplate = ({ message, options, style, close }: any) => {
+    return (
+      <div className="alert">
+        {message}
+      </div>
+    )
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StateProvider>
+      <AlertProvider template={alertTemplate} {...options}>
+        <AppRouter />
+      </AlertProvider>
+    </StateProvider>
   );
 }
 
